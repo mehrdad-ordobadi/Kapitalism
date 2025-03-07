@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  title: Product Service API
+  description: API for managing products and reviews in the e-commerce system
+  contact:
+    email: mfaghihordobadiu@my.bcit.ca
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /products:
+    get:
+      summary: Get products within a date range
+      operationId: app.get_products
+      parameters:
+        - name: start_timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: end_timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid input
+  
+  /reviews:
+    get:
+      summary: Get reviews within a date range
+      operationId: app.get_reviews
+      parameters:
+        - name: start_timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: end_timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid input
+  
+components:
+  schemas:
+    Product:
+      required:
+      - build_year
+      - model
+      - name
+      - price
+      - stock_quantity
+      type: object
+      properties:
+        name:
+          type: string
+          example: Bose Wireless Headphones
+        model:
+          type: string
+          example: Quiet Comfort
+        build_year:
+          type: number
+          example: 2024
+        price:
+          type: number
+          example: 479.95
+        category:
+          type: string
+          example: Electronics
+        stock_quantity:
+          type: number
+          example: 100
+        creation_date:
+          type: integer
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_uuid:
+          type: string
+          format: uuid
+        product_id:
+          type: integer
+        rating:
+          type: integer
+        review_text:
+          type: string
+        title:
+          type: string
+        creation_date:
+          type: integer
+        submission_date:
+          type: string
+          format: date-time
+        trace_id:
+          type: string
+          format: uuid

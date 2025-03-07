@@ -1,0 +1,7 @@
+version: 1
+datastore:
+  filename: /data/data.json
+scheduler:
+  period_sec: 5
+eventstore:
+  url: http://data-storage:8090

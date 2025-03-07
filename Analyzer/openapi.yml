@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  title: Analyzer Service API
+  description: API for analyzing products and reviews in the e-commerce system
+  contact:
+    email: mfaghihordobadiu@my.bcit.ca
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /products:
+    get:
+      summary: Get a product from history
+      operationId: app.get_product
+      parameters:
+        - name: index
+          in: query
+          description: Gets the product at the index in the event store
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a product event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /reviews:
+    get:
+      summary: Get a review from history
+      operationId: app.get_review
+      parameters:
+        - name: index
+          in: query
+          description: Gets the review at the index in the event store
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a review event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /stats:
+    get:
+      summary: Get event statistics
+      operationId: app.get_stats
+      responses:
+        '200':
+          description: Successfully returned event statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        model:
+          type: string
+        build_year:
+          type: number
+        price:
+          type: number
+        category:
+          type: string
+        stock_quantity:
+          type: number
+        trace_id:
+          type: string
+          format: uuid
+    Review:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+        product_id:
+          type: integer
+        rating:
+          type: integer
+        review_text:
+          type: string
+        title:
+          type: string
+        submission_date:
+          type: string
+          format: date-time
+        trace_id:
+          type: string
+          format: uuid
+    Stats:
+      type: object
+      properties:
+        num_products:
+          type: integer
+        num_reviews:
+          type: integer

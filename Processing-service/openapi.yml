@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  description: This API provides event stats for products and reviews
+  version: "1.0.0"
+  title: E-commerce Stats API
+  contact:
+    email: mfaghihordobadiu@my.bcit.ca
+
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets Product and Review processed statistics
+      responses:
+        '200':
+          description: Successfully returned statistics for products and reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventStats'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    EventStats:
+      type: object
+      required:
+        - num_products
+        - num_reviews
+        - max_product_price
+        - top_avg_review_rating
+      properties:
+        num_products:
+          type: integer
+          description: Total number of products
+          example: 1000
+        num_reviews:
+          type: integer
+          description: Total number of reviews
+          example: 5000
+        max_product_price:
+          type: number
+          format: float
+          description: Highest product price
+          example: 1999.99
+        top_avg_review_rating:
+          type: number
+          format: float
+          description: Highest average review rating for a product
+          example: 4.8

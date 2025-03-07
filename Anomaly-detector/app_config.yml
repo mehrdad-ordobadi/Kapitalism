@@ -1,0 +1,16 @@
+events:
+  hostname: kafka-server.westus.cloudapp.azure.com
+  port: 9092
+  topic: events
+
+kafka:
+  max_retries: 3
+  retry_delay: 5
+
+datastore:
+  filename: "/data/anomalies.json"
+
+anomaly:
+  thresholds:
+    price_max: 3000
+    stock_min: 10

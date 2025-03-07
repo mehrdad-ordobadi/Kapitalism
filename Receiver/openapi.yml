@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Product Service API
+  description: API for managing products and reviews in the e-commerce system
+  contact:
+    email: mfaghihordobadiu@my.bcit.ca
+  version: 1.0.0
+servers:
+- url: /receiver
+paths:
+  /add-product:
+    post:
+      summary: Add a new product
+      operationId: app.add_product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+        required: true
+      responses:
+        "201":
+          description: Product added successfully
+        "400":
+          description: Invalid input
+  /add-review:
+    post:
+      summary: Add a new review
+      operationId: app.add_review
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewInput'
+        required: true
+      responses:
+        "201":
+          description: Review added successfully
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    ProductInput:
+      required:
+      - product
+      - user_uuid
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        product:
+          $ref: '#/components/schemas/Product'
+    ReviewInput:
+      required:
+      - product_id
+      - rating
+      - review_text
+      - submission_date
+      - title
+      - user_uuid
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        product_id:
+          type: integer
+          example: 1
+        rating:
+          maximum: 5
+          minimum: 1
+          type: integer
+        review_text:
+          type: string
+        title:
+          type: string
+          example: "Great product, highly recommend!"
+        submission_date:
+          type: string
+          format: date-time
+          example: 2024-03-15T14:30:00Z
+    Product:
+      required:
+      - build_year
+      - model
+      - name
+      - price
+      - stock_quantity
+      type: object
+      properties:
+        name:
+          type: string
+          example: Bose Wireless Headphones
+        model:
+          type: string
+          example: Quiet Comfort
+        build_year:
+          type: number
+          example: 2024
+        price:
+          type: number
+          example: 479.95
+        category:
+          type: string
+          example: Electronics
+        stock_quantity:
+          type: number
+          example: 100

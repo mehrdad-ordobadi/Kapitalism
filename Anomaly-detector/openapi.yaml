@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  description: This API provides product anomalies detection for price and stock levels
+  version: "1.0.0"
+  title: Product Anomaly API
+  contact:
+    email: mfaghihordobadiu@bcit.ca
+
+paths:
+  /anomalies:
+    get:
+      summary: Gets the product anomalies
+      operationId: app.get_anomalies
+      description: Gets the list of product anomalies from newest to oldest
+      parameters:
+        - name: anomaly_type
+          in: query
+          description: The type of anomaly to retrieve (PriceTooHigh or StockTooLow)
+          schema:
+            type: string
+            enum: [PriceTooHigh, StockTooLow]
+            example: PriceTooHigh
+      responses:
+        '200':
+          description: Successfully returned a list of anomalies of the given type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Anomaly'
+        '400':
+          description: Invalid Anomaly Type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid anomaly_type. Must be 'PriceTooHigh' or 'StockTooLow'"
+        '404':
+          description: Anomalies do not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No anomalies found for the specified type"
+
+components:
+  schemas:
+    Anomaly:
+      required:
+      - event_id
+      - trace_id
+      - event_type
+      - anomaly_type
+      - description
+      - timestamp
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+        trace_id:
+          type: string
+          example: "12345"
+        event_type:
+          type: string
+          enum: [Product]
+          example: "Product"
+        anomaly_type:
+          type: string
+          enum: [PriceTooHigh, StockTooLow]
+          example: "PriceTooHigh"
+        description:
+          type: string
+          example: "The value is too high (Price of $3500 is greater than threshold of $3000)"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-11-14 11:22:33"
+      type: object

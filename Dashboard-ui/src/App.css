@@ -1,0 +1,60 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.error {
+    color: red;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.StatsTable{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.anomaly-display {
+  text-align: left;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.anomaly-display h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.anomaly-section {
+  margin-bottom: 30px;
+}
+
+.anomaly-display p {
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+.anomaly-display h3 {
+  text-align: center;
+  margin-top: 30px;
+}

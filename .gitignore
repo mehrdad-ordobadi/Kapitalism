@@ -1,0 +1,46 @@
+# Python cache files
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments (in any directory)
+**/venv/
+**/env/
+**/.env/
+
+# Logs
+*.log
+jmeter.log
+app.log
+
+# Database files
+*.sqlite
+*.db
+
+# Environment variables
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Configuration files containing sensitive data
+# Uncomment if you don't want to track these
+# *config.yml
+# *.yml
+
+# System files
+**/.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package installation files
+installed_packages.txt
+
+# JSON data files (if they're generated)
+data.json
