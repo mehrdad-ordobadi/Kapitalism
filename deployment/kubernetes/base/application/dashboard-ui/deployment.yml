@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: dashboard
-        image: mehrdadfordobadi/dashboard-ui
+        image: mehrdadfordobadi/kapitalism-ui
         ports:
         - containerPort: 3000
         env:

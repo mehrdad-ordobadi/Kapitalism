@@ -6,6 +6,11 @@ metadata:
   namespace: ecommerce
 data:
   app_config.yml: |
+    version: 1
+    add-product:
+      url: http://data-storage:8090/add-product
+    add-review:
+      url: http://data-storage:8090/add-review
     events:
       hostname: kafka
       port: 9092

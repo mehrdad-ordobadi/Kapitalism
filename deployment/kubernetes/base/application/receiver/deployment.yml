@@ -1,23 +1,24 @@
+# receiver.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: processing-service
+  name: receiver
   namespace: ecommerce
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: processing-service
+      app: receiver
   template:
     metadata:
       labels:
-        app: processing-service
+        app: receiver
     spec:
       containers:
-      - name: processing-service
-        image: mehrdadfordobadi/cap-service
+      - name: receiver
+        image: mehrdadfordobadi/kapitalism-receiver
         ports:
-        - containerPort: 8100
+        - containerPort: 8080
         env:
         - name: TARGET_ENV
           value: "test"
@@ -26,14 +27,9 @@ spec:
           mountPath: /app/config
         - name: logs
           mountPath: /logs
-        - name: data
-          mountPath: /data
       volumes:
       - name: config
         configMap:
-          name: processing-config
+          name: receiver-config
       - name: logs
         emptyDir: {}
-      - name: data
-        persistentVolumeClaim:
-          claimName: processing-data

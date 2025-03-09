@@ -1,0 +1,12 @@
+version: 1
+add-product:
+  url: http://localhost:8090/add-product
+add-review:
+  url: http://localhost:8090/add-review
+events:
+  hostname: kafka-server.westus.cloudapp.azure.com
+  port: 9092
+  topic: events
+kafka:
+  max_retries: 3
+  retry_delay: 5 

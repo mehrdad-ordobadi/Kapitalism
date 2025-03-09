@@ -1,0 +1,34 @@
+# base/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # Namespace
+  - namespaces/e-commerce.yml
+  
+  # ConfigMaps
+  - configmaps/configmaps.yml
+  
+  # Infrastructure
+  - events/zookeeper.yml
+  - events/kafka.yml
+  - databases/mysql/mysql.yml
+  
+  # Applications
+  - application/receiver/deployment.yml
+  - application/receiver/service.yml
+  - application/data-storage/deployment.yml
+  - application/data-storage/service.yml
+  - application/processing/deployment.yml
+  - application/processing/service.yml
+  - application/processing/pvc.yml
+  - application/analyzer/deployment.yml
+  - application/analyzer/service.yml
+  - application/anamoly-detector/deployment.yml
+  - application/anamoly-detector/service.yml
+  - application/anamoly-detector/pvc.yml
+  - application/dashboard-ui/deployment.yml
+  - application/dashboard-ui/service.yml
+  
+  # Ingress
+  - ingress/ingress.yml

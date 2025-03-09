@@ -18,30 +18,34 @@ spec:
       containers:
       - name: kafka
         image: wurstmeister/kafka
-        command: ["start-kafka.sh"]
         ports:
         - containerPort: 9092
+          name: external
+        - containerPort: 29092
+          name: internal
         env:
-        - name: KAFKA_CREATE_TOPICS
-          value: "events:1:1"
-        - name: KAFKA_ADVERTISED_HOST_NAME
-          value: "kafka"
-        - name: KAFKA_LISTENERS
-          value: "INSIDE://:29092,OUTSIDE://:9092"
-        - name: KAFKA_INTER_BROKER_LISTENER_NAME
-          value: "INSIDE"
-        - name: KAFKA_ADVERTISED_LISTENERS
-          value: "INSIDE://kafka:29092,OUTSIDE://kafka:9092"
-        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-          value: "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: "zookeeper:2181"
+        - name: KAFKA_LISTENERS
+          value: "PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:29092"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://kafka:9092,INTERNAL://kafka:29092"
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT"
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: "INTERNAL"
         - name: KAFKA_BROKER_ID
           value: "1"
         - name: KAFKA_LOG_DIRS
           value: "/kafka/kafka-logs"
-        - name: TARGET_ENV
-          value: "test"
+        - name: KAFKA_CREATE_TOPICS
+          value: "events:1:1"
+        # Set JVM options to allow more memory for GC
+        - name: KAFKA_HEAP_OPTS
+          value: "-Xmx512M -Xms256M"
+        # Add this to prevent trying to create a port config entry
+        - name: KAFKA_PORT
+          value: "9092"
         volumeMounts:
         - name: kafka-data
           mountPath: /kafka/kafka-logs
@@ -62,9 +66,11 @@ metadata:
   namespace: ecommerce
 spec:
   ports:
-  - port: 9092
+  - name: external
+    port: 9092
     targetPort: 9092
-  - port: 29092
+  - name: internal
+    port: 29092
     targetPort: 29092
   selector:
     app: kafka

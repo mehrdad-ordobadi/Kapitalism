@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: data-storage
-        image: mehrdadfordobadi/cap-storage
+        image: mehrdadfordobadi/kapitalism-storage
         ports:
         - containerPort: 8090
         env:
