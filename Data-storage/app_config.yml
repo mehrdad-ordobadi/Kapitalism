@@ -2,11 +2,11 @@ version: 1
 datastore:
   user: <your username>
   password: <your password>
-  hostname: kafka-server.westus.cloudapp.azure.com
+  hostname: mysql
   port: 3306
   db: <your database name>
 events:
-  hostname: kafka-server.westus.cloudapp.azure.com
+  hostname: kafka
   port: 9092
   topic: events
 kafka:

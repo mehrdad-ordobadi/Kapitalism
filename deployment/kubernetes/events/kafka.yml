@@ -1,0 +1,70 @@
+# kafka.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: ecommerce
+spec:
+  serviceName: kafka
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: wurstmeister/kafka
+        command: ["start-kafka.sh"]
+        ports:
+        - containerPort: 9092
+        env:
+        - name: KAFKA_CREATE_TOPICS
+          value: "events:1:1"
+        - name: KAFKA_ADVERTISED_HOST_NAME
+          value: "kafka"
+        - name: KAFKA_LISTENERS
+          value: "INSIDE://:29092,OUTSIDE://:9092"
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: "INSIDE"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "INSIDE://kafka:29092,OUTSIDE://kafka:9092"
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "zookeeper:2181"
+        - name: KAFKA_BROKER_ID
+          value: "1"
+        - name: KAFKA_LOG_DIRS
+          value: "/kafka/kafka-logs"
+        - name: TARGET_ENV
+          value: "test"
+        volumeMounts:
+        - name: kafka-data
+          mountPath: /kafka/kafka-logs
+  volumeClaimTemplates:
+  - metadata:
+      name: kafka-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: ecommerce
+spec:
+  ports:
+  - port: 9092
+    targetPort: 9092
+  - port: 29092
+    targetPort: 29092
+  selector:
+    app: kafka

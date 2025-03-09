@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: mehrdadfordobadi/dashboard-ui
+        ports:
+        - containerPort: 3000
+        env:
+        - name: TARGET_ENV
+          value: "test"
+        - name: WATCHPACK_POLLING
+          value: "true"
+        - name: WDS_SOCKET_HOST
+          value: "0.0.0.0"
+        - name: WDS_SOCKET_PORT
+          value: "3000"
+        - name: HOST
+          value: "0.0.0.0"

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-storage
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-storage
+  template:
+    metadata:
+      labels:
+        app: data-storage
+    spec:
+      containers:
+      - name: data-storage
+        image: mehrdadfordobadi/cap-storage
+        ports:
+        - containerPort: 8090
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD
+        - name: TARGET_ENV
+          value: "test"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        - name: logs
+          mountPath: /logs
+      volumes:
+      - name: config
+        configMap:
+          name: data-storage-config
+      - name: logs
+        emptyDir: {}

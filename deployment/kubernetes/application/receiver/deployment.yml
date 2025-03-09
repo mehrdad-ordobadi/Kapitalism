@@ -1,0 +1,35 @@
+# receiver.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receiver
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: receiver
+  template:
+    metadata:
+      labels:
+        app: receiver
+    spec:
+      containers:
+      - name: receiver
+        image: mehrdadfordobadi/cap-receiver
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TARGET_ENV
+          value: "test"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        - name: logs
+          mountPath: /logs
+      volumes:
+      - name: config
+        configMap:
+          name: receiver-config
+      - name: logs
+        emptyDir: {}

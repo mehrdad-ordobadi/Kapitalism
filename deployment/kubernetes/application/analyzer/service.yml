@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: analyzer
+  namespace: ecommerce
+spec:
+  ports:
+  - port: 8110
+    targetPort: 8110
+  selector:
+    app: analyzer

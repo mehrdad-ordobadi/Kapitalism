@@ -1,4 +1,4 @@
 events:
-  hostname: kafka-server.westus.cloudapp.azure.com
+  hostname: kafka
   port: 9092
   topic: events

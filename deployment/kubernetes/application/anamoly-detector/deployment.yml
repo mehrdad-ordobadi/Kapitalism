@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anomaly-detector
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anomaly-detector
+  template:
+    metadata:
+      labels:
+        app: anomaly-detector
+    spec:
+      containers:
+      - name: anomaly-detector
+        image: mehrdadfordobadi/cap-anomaly
+        ports:
+        - containerPort: 8120
+        env:
+        - name: TARGET_ENV
+          value: "test"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        - name: logs
+          mountPath: /logs
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: config
+        configMap:
+          name: anomaly-config
+      - name: logs
+        emptyDir: {}
+      - name: data
+        persistentVolumeClaim:
+          claimName: anomaly-data

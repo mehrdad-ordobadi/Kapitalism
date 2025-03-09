@@ -1,0 +1,213 @@
+# configmaps.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: receiver-config
+  namespace: ecommerce
+data:
+  app_config.yml: |
+    events:
+      hostname: kafka
+      port: 9092
+      topic: events
+    kafka:
+      max_retries: 3
+      retry_delay: 5
+  log_config.yml: |
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+      simple:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+    loggers:
+      basicLogger:
+        level: DEBUG
+        handlers: [console, file]
+        propagate: no
+    root:
+      level: DEBUG
+      handlers: [console]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-storage-config
+  namespace: ecommerce
+data:
+  app_config.yml: |
+    version: 1
+    datastore:
+      hostname: mysql
+      port: 3306
+    events:
+      hostname: kafka
+      port: 9092
+      topic: events
+    kafka:
+      max_retries: 3
+      retry_delay: 5
+  log_config.yml: |
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+      simple:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+    loggers:
+      basicLogger:
+        level: DEBUG
+        handlers: [console, file]
+        propagate: no
+    root:
+      level: DEBUG
+      handlers: [console]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: processing-config
+  namespace: ecommerce
+data:
+  app_config.yml: |
+    version: 1
+    datastore:
+      filename: /data/data.json
+    scheduler:
+      period_sec: 5
+    eventstore:
+      url: http://data-storage:8090
+  log_config.yml: |
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+      simple:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+    loggers:
+      basicLogger:
+        level: DEBUG
+        handlers: [console, file]
+        propagate: no
+    root:
+      level: DEBUG
+      handlers: [console]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analyzer-config
+  namespace: ecommerce
+data:
+  app_config.yml: |
+    events:
+      hostname: kafka
+      port: 9092
+      topic: events
+  log_config.yml: |
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+      simple:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+    loggers:
+      basicLogger:
+        level: DEBUG
+        handlers: [console, file]
+        propagate: no
+    root:
+      level: DEBUG
+      handlers: [console]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: anomaly-config
+  namespace: ecommerce
+data:
+  app_config.yml: |
+    events:
+      hostname: kafka
+      port: 9092
+      topic: events
+    kafka:
+      max_retries: 3
+      retry_delay: 5
+    datastore:
+      filename: "/data/anomalies.json"
+    anomaly:
+      thresholds:
+        price_max: 3000
+        stock_min: 10
+  log_config.yml: |
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+      simple:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+    loggers:
+      basicLogger:
+        level: DEBUG
+        handlers: [console, file]
+        propagate: no
+      pykafka:
+        level: INFO
+    root:
+      level: DEBUG
+      handlers: [console]
