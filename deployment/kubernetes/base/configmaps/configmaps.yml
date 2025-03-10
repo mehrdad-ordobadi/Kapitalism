@@ -103,7 +103,7 @@ data:
     scheduler:
       period_sec: 5
     eventstore:
-      url: http://data-storage:8090
+      url: http://data-storage:8090/storage
   log_config.yml: |
     version: 1
     disable_existing_loggers: False
@@ -216,3 +216,81 @@ data:
     root:
       level: DEBUG
       handlers: [console]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-script
+  namespace: ecommerce
+data:
+  init.sql: |
+    USE ecommerce;
+    
+    CREATE TABLE IF NOT EXISTS product (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(250) NOT NULL,
+      model VARCHAR(250) NOT NULL,
+      build_year INT NOT NULL,
+      price DECIMAL(10, 2) NOT NULL,
+      category VARCHAR(250),
+      stock_quantity INT NOT NULL,
+      trace_id VARCHAR(36) NOT NULL,
+      creation_date BIGINT NOT NULL
+    ) ENGINE=InnoDB;
+    
+    CREATE TABLE IF NOT EXISTS review (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_uuid VARCHAR(36) NOT NULL,
+      product_id INT NOT NULL,
+      rating INT NOT NULL,
+      review_text TEXT NOT NULL,
+      title VARCHAR(250) NOT NULL,
+      submission_date VARCHAR(100) NOT NULL,
+      creation_date BIGINT NOT NULL,
+      trace_id VARCHAR(36) NOT NULL,
+      FOREIGN KEY (product_id) REFERENCES product (id)
+    ) ENGINE=InnoDB;
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-init-job
+  namespace: ecommerce
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql-init
+        image: mysql:8.0
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Waiting for MySQL to be ready..."
+          until mysql -h mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; do
+            sleep 2
+          done
+          echo "MySQL is ready. Initializing database..."
+          mysql -h mysql -u $MYSQL_USER -p$MYSQL_PASSWORD < /docker-entrypoint-initdb.d/init.sql
+          echo "Database initialization complete!"
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: MYSQL_PASSWORD
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: init-script
+        configMap:
+          name: mysql-init-script
+      restartPolicy: Never
+  backoffLimit: 5

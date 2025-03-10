@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: ecommerce-ingress
   namespace: ecommerce
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
   - host: ecommerce.local  # Add this to /etc/hosts pointing to minikube IP

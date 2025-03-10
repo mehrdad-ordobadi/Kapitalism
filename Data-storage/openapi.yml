@@ -6,7 +6,8 @@ info:
     email: mfaghihordobadiu@my.bcit.ca
   version: 1.0.0
 servers:
-- url: /
+# - url: /
+- url: /storage  # Corrected servers URL to match base_path
 paths:
   /products:
     get:
