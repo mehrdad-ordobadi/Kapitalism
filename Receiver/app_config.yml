@@ -4,7 +4,7 @@ add-product:
 add-review:
   url: http://localhost:8090/add-review
 events:
-  hostname: kafka-server.westus.cloudapp.azure.com
+  hostname: kafka
   port: 9092
   topic: events
 kafka:
