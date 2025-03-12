@@ -14,10 +14,6 @@ spec:
       labels:
         app: receiver
     spec:
-      initContainers:
-      - name: wait-for-kafka
-        image: busybox
-        command: ['sh', '-c', 'timeout=90; while [ $timeout -gt 0 ] && ! nc -z kafka 9092; do echo "waiting for kafka ($timeout secs remaining)"; sleep 5; timeout=$((timeout-5)); done; if [ $timeout -le 0 ]; then echo "Kafka connection timeout"; exit 1; fi']
       containers:
       - name: receiver
         image: mehrdadfordobadi/kapitalism-receiver
