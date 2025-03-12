@@ -13,6 +13,10 @@ spec:
       labels:
         app: dashboard
     spec:
+      initContainers:
+      - name: wait-for-dependencies
+        image: busybox
+        command: ['sh', '-c', 'until nc -z processing-service 8100 && nc -z analyzer 8110 && nc -z anomaly-detector 8120; do echo waiting for backend services; sleep 2; done;']
       containers:
       - name: dashboard
         image: mehrdadfordobadi/kapitalism-ui
@@ -29,3 +33,15 @@ spec:
           value: "3000"
         - name: HOST
           value: "0.0.0.0"
+        - name: PUBLIC_URL
+          value: "/"
+        - name: REACT_APP_API_HOST
+          value: "http://ecommerce.local"
+        volumeMounts:
+        - name: runtime-config
+          mountPath: /app/public/runtime-config.js
+          subPath: runtime-config.js
+      volumes:
+      - name: runtime-config
+        configMap:
+          name: dashboard-runtime-config

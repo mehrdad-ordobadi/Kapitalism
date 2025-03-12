@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '../App.css';
+import config from '../config';
 
 export default function AppStats() {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -9,7 +10,7 @@ export default function AppStats() {
      // eslint-disable-next-line
     useEffect(() => {
         const getStats = () => {
-            fetch(`/processing/stats`)
+            fetch(config.endpoints.stats)
                 .then(res => res.json())
                 .then((result)=>{
                     console.log("Received Stats")

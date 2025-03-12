@@ -10,6 +10,7 @@ import connexion
 from connexion import NoContent
 from pykafka import KafkaClient
 import yaml
+from flask_cors import CORS
 
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
@@ -162,6 +163,7 @@ def add_review(body):
 
 app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
+CORS(app.app, resources={r"/*": {"origins": "*"}})
 
 if __name__ == "__main__":
     # Connect to Kafka before starting the Flask app

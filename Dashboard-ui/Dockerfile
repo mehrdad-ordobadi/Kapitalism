@@ -14,4 +14,8 @@ RUN npm install
 RUN npm install react-scripts@3.4.1 -g
 COPY . ./
 
+COPY setup-runtime-config.sh /
+RUN chmod +x /setup-runtime-config.sh
+CMD ["/bin/sh", "-c", "/setup-runtime-config.sh && npm start"]
+
 CMD ["npm", "start", "--", "--host", "0.0.0.0"]

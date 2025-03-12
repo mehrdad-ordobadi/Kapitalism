@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '../App.css';
+import config from '../config';
 
 export default function AnomalyDisplay() {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -10,7 +11,7 @@ export default function AnomalyDisplay() {
     const getAnomalies = () => {
         const types = ['PriceTooHigh', 'StockTooLow'];
         const promises = types.map(type => 
-            fetch(`/anomaly/anomalies?anomaly_type=${type}`)
+            fetch(config.endpoints.anomalies(type))
                 .then(res => res.json())
                 .then(data => ({ type, data }))
         );

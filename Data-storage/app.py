@@ -4,6 +4,7 @@ import json
 import os
 import time
 from threading import Thread
+from flask_cors import CORS
 
 import yaml
 import connexion
@@ -256,6 +257,7 @@ app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api(
     "openapi.yml", base_path="/storage", strict_validation=True, validate_responses=True
 )
+CORS(app.app, resources={r"/*": {"origins": "*"}})
 
 if __name__ == "__main__":
     t1 = Thread(target=process_messages)

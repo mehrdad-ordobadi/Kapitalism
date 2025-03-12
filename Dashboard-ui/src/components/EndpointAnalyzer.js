@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '../App.css';
+import config from '../config';
 
 export default function EndpointAnalyzer(props) {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -10,7 +11,7 @@ export default function EndpointAnalyzer(props) {
     const getAnalyzer = () => {
         const rand_val = Math.floor(Math.random() * 100); // Move random value generation inside getAnalyzer
         
-        fetch(`/analyzer/${props.endpoint}?index=${rand_val}`)
+        fetch(config.endpoints.analyzer(props.endpoint, rand_val))
             .then(res => res.json())
             .then((result)=>{
                 console.log("Received Analyzer Results for " + props.endpoint)

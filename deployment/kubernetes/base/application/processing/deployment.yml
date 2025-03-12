@@ -13,6 +13,10 @@ spec:
       labels:
         app: processing-service
     spec:
+      initContainers:
+      - name: wait-for-dependencies
+        image: busybox
+        command: ['sh', '-c', 'until nc -z data-storage 8090; do echo waiting for data-storage; sleep 2; done;']
       containers:
       - name: processing-service
         image: mehrdadfordobadi/kapitalism-processing
