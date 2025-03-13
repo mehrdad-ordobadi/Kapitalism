@@ -3,50 +3,53 @@ kind: Ingress
 metadata:
   name: ecommerce-ingress
   namespace: ecommerce
-  # annotations:
-  #   nginx.ingress.kubernetes.io/rewrite-target: /$2
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 spec:
   rules:
-  - host: ecommerce.local  # Add this to /etc/hosts pointing to minikube IP
+  - host: ecommerce.local
     http:
       paths:
       - path: /receiver(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: receiver
             port:
               number: 8080
       - path: /storage(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: data-storage
             port:
               number: 8090
       - path: /processing(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: processing-service
             port:
               number: 8100
       - path: /analyzer(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: analyzer
             port:
               number: 8110
       - path: /anomaly(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: anomaly-detector
             port:
               number: 8120
-      - path: /()(.*)
-        pathType: Prefix
+      - path: /(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: dashboard
