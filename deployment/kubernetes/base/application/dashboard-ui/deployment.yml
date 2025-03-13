@@ -37,11 +37,11 @@ spec:
           value: "/"
         - name: REACT_APP_API_HOST
           value: "http://ecommerce.local"
-        volumeMounts:
-        - name: runtime-config
-          mountPath: /app/public/runtime-config.js
-          subPath: runtime-config.js
-      volumes:
-      - name: runtime-config
-        configMap:
-          name: dashboard-runtime-config
+        # volumeMounts:
+        # - name: runtime-config
+        #   mountPath: /app/public/runtime-config.js
+        #   subPath: runtime-config.js
+      # volumes:
+      # - name: runtime-config
+      #   configMap:
+      #     name: dashboard-runtime-config
