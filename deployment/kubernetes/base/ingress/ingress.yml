@@ -4,7 +4,7 @@ metadata:
   name: ecommerce-ingress
   namespace: ecommerce
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
@@ -20,28 +20,32 @@ spec:
             name: receiver
             port:
               number: 8080
-      - path: /storage(/|$)(.*)
+      # - path: /storage(/|$)(.*)
+      - path: /storage/?(.*)
         pathType: ImplementationSpecific
         backend:
           service:
             name: data-storage
             port:
               number: 8090
-      - path: /processing(/|$)(.*)
+      # - path: /processing(/|$)(.*)
+      - path: /processing/?(.*)
         pathType: ImplementationSpecific
         backend:
           service:
             name: processing-service
             port:
               number: 8100
-      - path: /analyzer(/|$)(.*)
+      # - path: /analyzer(/|$)(.*)
+      - path: /analyzer/?(.*)
         pathType: ImplementationSpecific
         backend:
           service:
             name: analyzer
             port:
               number: 8110
-      - path: /anomaly(/|$)(.*)
+      # - path: /anomaly(/|$)(.*)
+      - path: /anomaly/?(.*)
         pathType: ImplementationSpecific
         backend:
           service:
