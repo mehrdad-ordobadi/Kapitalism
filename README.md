@@ -1,6 +1,6 @@
 ## in order to run deploy this locally into minikube:
 
-### 1.From /deployment/kubernetes run:
+### 1.From deployment/kubernetes run:
 
 ```
 kubectl apply -k base/
