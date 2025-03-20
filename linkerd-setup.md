@@ -107,13 +107,12 @@ local container is running using the Docker container runtime
 linkerd install --set proxyInit.runAsRoot=true | kubectl apply -f -
 ```
 
-----
+install dashboard as well:
 
-next step investigate:
+```
+linkerd viz install | kubectl apply -f -
+```
 
-kubectl get pods -n linkerd
-NAME                                      READY   STATUS    RESTARTS   AGE
-linkerd-destination-55f66c5bc5-n2wmh      4/4     Running   0          4m14s
-linkerd-identity-5fdc96c5f8-dfvmc         2/2     Running   0          4m15s
-linkerd-proxy-injector-6df56b8bdf-z7d55   2/2     Running   0          4m14s
-kubectl logs -n linkerd linkerd-destination-55f66c5bc5-n2wmh
+## Step5: Access linkerd dashboard via port forward:
+
+kubectl port-forward -n linkerd-viz svc/web 8084:8084

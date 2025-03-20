@@ -16,15 +16,8 @@ spec:
     spec:
       initContainers:
       - name: linkerd-wait
-        image: curlimages/curl
-        command: 
-        - '/bin/sh'
-        - '-c'
-        - |
-          until curl -s --fail http://linkerd-dst.linkerd.svc.cluster.local:8086/ready || curl -s --fail http://metrics-api.linkerd.svc.cluster.local:8085/ready; do
-            echo "Waiting for linkerd services..."
-            sleep 2
-          done
+        image: busybox
+        command: ['sh', '-c', 'until nc -z linkerd-dst.linkerd.svc.cluster.local 8086; do echo waiting for linkerd; sleep 5; done;']
       - name: wait-for-kafka
         image: busybox
         command: ['sh', '-c', 'timeout=90; while [ $timeout -gt 0 ] && ! nc -z kafka 9092; do echo "waiting for kafka ($timeout secs remaining)"; sleep 5; timeout=$((timeout-5)); done; if [ $timeout -le 0 ]; then echo "Kafka connection timeout"; exit 1; fi']
