@@ -23,3 +23,17 @@
 
 ## Phase5: 
 > Integrate ArgoCD into cluster
+
+
+---------------------------------new plan----------------------------
+## Phase1: 
+> deploy microservices locally
+
+## Phase2:
+> Integrate linkerd with the local cluster - the following features will be added:
+* set up linkerd in the cluster
+* Need: hpa, health checks
+* mTLS
+* Tracing, Metrics, etc
+* set up circuit-breakers, automatic retries
+* Internal Loadbalancer

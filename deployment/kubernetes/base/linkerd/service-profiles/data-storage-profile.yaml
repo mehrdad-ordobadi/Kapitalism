@@ -1,0 +1,17 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: data-storage.ecommerce.svc.cluster.local
+  namespace: ecommerce
+spec:
+  routes:
+    - name: get-products
+      condition:
+        method: GET
+        pathRegex: /storage/products.*
+      timeout: "800ms"
+    - name: get-reviews
+      condition:
+        method: GET
+        pathRegex: /storage/reviews.*
+      timeout: "800ms"

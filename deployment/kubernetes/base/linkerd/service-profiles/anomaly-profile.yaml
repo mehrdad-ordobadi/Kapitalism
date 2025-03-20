@@ -1,0 +1,12 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: anomaly-detector.ecommerce.svc.cluster.local
+  namespace: ecommerce
+spec:
+  routes:
+    - name: get-anomalies
+      condition:
+        method: GET
+        pathRegex: /anomaly/anomalies.*
+      timeout: "500ms"

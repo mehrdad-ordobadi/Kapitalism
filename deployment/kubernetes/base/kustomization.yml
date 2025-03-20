@@ -1,10 +1,17 @@
-# base/kustomization.yaml
+# Updated kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  # Namespace
+  # Namespace (modified with Linkerd annotation)
   - namespaces/e-commerce.yml
+  
+  # Linkerd Service Profiles - Add these before your applications
+  - linkerd/service-profiles/receiver-profile.yaml
+  - linkerd/service-profiles/data-storage-profile.yaml
+  - linkerd/service-profiles/processing-profile.yaml
+  - linkerd/service-profiles/analyzer-profile.yaml
+  - linkerd/service-profiles/anomaly-profile.yaml
   
   # ConfigMaps
   - configmaps/configmaps.yml
@@ -32,3 +39,4 @@ resources:
   
   # Ingress
   - ingress/ingress.yml
+  - ingress/linkerd-viz-ingress.yml

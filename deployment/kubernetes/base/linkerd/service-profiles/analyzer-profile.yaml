@@ -1,0 +1,22 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: analyzer.ecommerce.svc.cluster.local
+  namespace: ecommerce
+spec:
+  routes:
+    - name: get-product
+      condition:
+        method: GET
+        pathRegex: /analyzer/products.*
+      timeout: "300ms"
+    - name: get-review
+      condition:
+        method: GET
+        pathRegex: /analyzer/reviews.*
+      timeout: "300ms"
+    - name: get-stats
+      condition:
+        method: GET
+        pathRegex: /analyzer/stats
+      timeout: "300ms"

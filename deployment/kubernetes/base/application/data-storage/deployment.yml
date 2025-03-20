@@ -14,6 +14,16 @@ spec:
         app: data-storage
     spec:
       initContainers:
+      - name: linkerd-wait
+        image: curlimages/curl
+        command: 
+        - '/bin/sh'
+        - '-c'
+        - |
+          until curl -s --fail http://linkerd-dst.linkerd.svc.cluster.local:8086/ready || curl -s --fail http://metrics-api.linkerd.svc.cluster.local:8085/ready; do
+            echo "Waiting for linkerd services..."
+            sleep 2
+          done
       - name: wait-for-dependencies
         image: busybox
         command: ['sh', '-c', 'until nc -z kafka 9092; do echo waiting for kafka; sleep 2; done; until nc -z mysql 3306; do echo waiting for mysql; sleep 2; done;']

@@ -1,0 +1,36 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: receiver.ecommerce.svc.cluster.local
+  namespace: ecommerce
+spec:
+  routes:
+    - name: add-product
+      condition:
+        method: POST
+        pathRegex: /receiver/add-product
+      timeout: "500ms"
+      isRetryable: true  # Instead of retryPolicy
+      responseClasses:
+        - condition:
+            status:
+              min: 500
+              max: 599
+          isFailure: true
+    - name: add-review
+      condition:
+        method: POST
+        pathRegex: /receiver/add-review
+      timeout: "500ms"
+      isRetryable: true  # Instead of retryPolicy
+      responseClasses:
+        - condition:
+            status:
+              min: 500
+              max: 599
+          isFailure: true
+  # Global retry budget to control retry behavior
+  retryBudget:
+    retryRatio: 0.2          # Allow retries to add 20% to request load
+    minRetriesPerSecond: 10  # Minimum retry allowance
+    ttl: 10s                 # Window size for calculating retry ratio

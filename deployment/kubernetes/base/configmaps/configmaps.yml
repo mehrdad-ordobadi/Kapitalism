@@ -260,6 +260,20 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+      - name: linkerd-wait
+        image: curlimages/curl
+        command: 
+        - '/bin/sh'
+        - '-c'
+        - |
+          until curl -s --fail http://linkerd-dst.linkerd.svc.cluster.local:8086/ready || curl -s --fail http://metrics-api.linkerd.svc.cluster.local:8085/ready; do
+            echo "Waiting for linkerd services..."
+            sleep 2
+          done
+      - name: wait-for-mysql
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mysql 3306; do echo "Waiting for MySQL..."; sleep 2; done']
       containers:
       - name: mysql-init
         image: mysql:8.0
