@@ -44,3 +44,7 @@ installed_packages.txt
 
 # JSON data files (if they're generated)
 data.json
+
+## key/cert files
+*/*.key
+*/*.crt
