@@ -46,5 +46,5 @@ installed_packages.txt
 data.json
 
 ## key/cert files
-*/*.key
-*/*.crt
+*.key
+*.crt
