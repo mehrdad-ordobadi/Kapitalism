@@ -23,6 +23,13 @@ spec:
       containers:
       - name: processing-service
         image: mehrdadfordobadi/kapitalism-processing
+        resources:
+          requests:
+            cpu: "30m"
+            memory: "60Mi"
+          limits:
+            cpu: "40m" 
+            memory: "90Mi"
         ports:
         - containerPort: 8100
         env:

@@ -24,16 +24,21 @@ resources:
   # Applications
   - application/receiver/deployment.yml
   - application/receiver/service.yml
+  - application/receiver/hpa.yml 
   - application/data-storage/deployment.yml
   - application/data-storage/service.yml
+  - application/data-storage/hpa.yml
   - application/processing/deployment.yml
   - application/processing/service.yml
   - application/processing/pvc.yml
+  - application/processing/hpa.yml
   - application/analyzer/deployment.yml
   - application/analyzer/service.yml
+  - application/analyzer/hpa.yml
   - application/anamoly-detector/deployment.yml
   - application/anamoly-detector/service.yml
   - application/anamoly-detector/pvc.yml
+  - application/anamoly-detector/hpa.yml
   - application/dashboard-ui/deployment.yml
   - application/dashboard-ui/service.yml
   

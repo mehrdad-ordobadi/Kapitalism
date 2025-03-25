@@ -32,6 +32,13 @@ spec:
       containers:
       - name: mysql
         image: mysql/mysql-server:8.0
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "750Mi"
+          limits:
+            cpu: "1000m" 
+            memory: "1.5Gi"
         ports:
         - containerPort: 3306
         env:
@@ -65,6 +72,28 @@ spec:
             command: ["mysqladmin", "ping", "-h", "localhost"]
           initialDelaySeconds: 30
           periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-h", "localhost"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                # Configure replication if not primary (pod-0)
+                if [[ $(hostname) != mysql-0 ]]; then
+                  # Wait for mysql-0 to be ready
+                  until mysql -h mysql-0.mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SELECT 1"; do
+                    echo "Waiting for primary to be ready..."
+                    sleep 5
+                  done
+                  # Set up replication
+                  mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CHANGE MASTER TO MASTER_HOST='mysql-0.mysql', MASTER_USER='root', MASTER_PASSWORD='$MYSQL_ROOT_PASSWORD', MASTER_AUTO_POSITION=1; START SLAVE;"
+                fi
   volumeClaimTemplates:
   - metadata:
       name: mysql-data

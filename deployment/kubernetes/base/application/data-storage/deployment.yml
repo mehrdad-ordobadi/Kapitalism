@@ -23,6 +23,13 @@ spec:
       containers:
       - name: data-storage
         image: mehrdadfordobadi/kapitalism-storage
+        resources:
+          requests:
+            cpu: "30m"
+            memory: "250Mi"
+          limits:
+            cpu: "40m" 
+            memory: "450Mi"
         ports:
         - containerPort: 8090
         env:

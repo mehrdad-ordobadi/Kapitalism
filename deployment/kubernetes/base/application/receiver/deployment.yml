@@ -24,6 +24,13 @@ spec:
       containers:
       - name: receiver
         image: mehrdadfordobadi/kapitalism-receiver
+        resources:
+          requests:
+            cpu: "30m"
+            memory: "80Mi"
+          limits:
+            cpu: "40m" 
+            memory: "200Mi"
         ports:
         - containerPort: 8080
         env:
@@ -40,3 +47,4 @@ spec:
           name: receiver-config
       - name: logs
         emptyDir: {}
+      

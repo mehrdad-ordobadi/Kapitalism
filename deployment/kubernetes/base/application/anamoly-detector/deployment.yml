@@ -23,6 +23,13 @@ spec:
       containers:
       - name: anomaly-detector
         image: mehrdadfordobadi/kapitalism-anomaly
+        resources:
+          requests:
+            cpu: "30m"
+            memory: "60Mi"
+          limits:
+            cpu: "40m" 
+            memory: "80Mi"
         ports:
         - containerPort: 8120
         env:
