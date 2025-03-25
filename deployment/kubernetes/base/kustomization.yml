@@ -20,6 +20,7 @@ resources:
   - events/zookeeper.yml
   - events/kafka.yml
   - databases/mysql/mysql.yml
+  # - databases/mysql/hpa.yml
   
   # Applications
   - application/receiver/deployment.yml
