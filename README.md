@@ -1,5 +1,11 @@
 ## in order to run deploy this locally into minikube:
 
+### 0. Create minikube cluster:
+
+```
+minikube start --driver=docker --network-plugin=cni --cni=bridge
+```
+
 ### 1.From deployment/kubernetes run:
 
 ```
